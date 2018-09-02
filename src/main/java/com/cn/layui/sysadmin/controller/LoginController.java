@@ -2,14 +2,12 @@ package com.cn.layui.sysadmin.controller;
 
 
 import com.cn.layui.sysadmin.result.R;
-import com.cn.layui.sysadmin.service.LoginService;
 import com.cn.layui.sysadmin.shiro.ShiroUtils;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,13 +18,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Map;
 
 @Controller
 public class LoginController {
-    @Resource
-    private LoginService loginService;
-
     @Resource
     private Producer producer;
 

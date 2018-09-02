@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class SysAdminController {
-//    @RequestMapping(value = "index")
-//    public String index(){
-//        return "index";
-//    }
+    @RequestMapping(value = "index")
+    public String index(){
+        return "index";
+    }
 
     @RequestMapping(value = "4xx")
     public String error(){
