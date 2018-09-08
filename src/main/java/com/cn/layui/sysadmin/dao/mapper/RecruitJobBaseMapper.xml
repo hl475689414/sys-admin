@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.RecruitJobBaseMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.RecruitJobBase" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="companyId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="classId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="workCity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="education" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="staffNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="payStart" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="payEnd" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="workYear" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="rank" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="viewNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="postNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="isExpress" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="isDelete" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="openTalkTimes" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="goodTalkTimes" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="createTime" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="updateTime" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="displayState" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="expireTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="businessId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="recommendNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, companyId, classId, userId, workCity, education, staffNum, payStart, payEnd, 
+    workYear, rank, viewNum, postNum, isExpress, isDelete, openTalkTimes, goodTalkTimes, 
+    createTime, updateTime, displayState, expireTime, businessId, recommendNum
+  </sql>
+
+
+  <select id="getJobBaseList" resultType="com.cn.layui.sysadmin.vo.RecruitJobBaseListVo" parameterType="java.lang.Integer" >
+      SELECT rjb.id,rjb.classId,rjc.title AS className,rjb.displayState,rje.title,rjb.businessId AS business,cb.`name` AS businessTitle,rjb.payStart,rjb.payEnd,rjb.workYear,rjb.education,rjb.workCity AS cityId,cc.`name` AS cityName
+      FROM recruit_job_base rjb
+      LEFT JOIN recruit_job_extend rje on rje.jobId = rjb.id
+      LEFT JOIN recruit_job_class rjc on rjc.id = rjb.classId
+      LEFT JOIN common_business cb on cb.id = rjb.businessId
+      LEFT JOIN common_city cc on cc.id = rjb.workCity
+      WHERE rjb.companyId = #{companyId} AND rjb.isDelete = 0
+  </select>
+
+  <select id="selectListByCondition" resultType="com.cn.layui.sysadmin.vo.PostPositionVo">
+    SELECT
+    FROM recruit_job_base rjb
+    LEFT JOIN recruit_job_extend rje on rje.jobId = rjb.id
+    LEFT JOIN recruit_job_class rjc on rjc.id = rjb.classId
+    LEFT JOIN common_business cb on cb.id = rjb.businessId
+
+  </select>
+
+</mapper>
