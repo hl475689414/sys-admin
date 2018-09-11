@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>企业推送</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <style>
+        .layui-table-cell{
+            height:31px;
+            line-height: 31px;
+            margin-top: 0px;
+        }
+    </style>
+</head>
+<body>
+<input  id="jobClassList" hidden th:value="${jobClassList}"/>
+<input  id="citys" hidden th:value="${cityList}"/>
+<input  id="dataCount" hidden th:value="${dataCount}"/>
+<input  id="classId" hidden th:value="${classId}"/>
+<input hidden id="firstClassId"  th:value="${firstClassId}"/>
+<input  id="workCity" hidden th:value="${workCity}"/>
+<input  id="firstWorkCity" hidden th:value="${firstWorkCity}"/>
+<input  id="rank"hidden  th:value="${rank}"/>
+<input  id="_workYear" hidden th:value="${workYear}"/>
+<input  id="_sort" hidden th:value="${sort}"/>
+<br>
+<form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <div id="jobClass" style="margin-left: 12px">
+                <el-cascader v-model="jobClass" placeholder="招聘职位" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div hidden sign="classId" v-for="i in jobClasss">
+                   {{i.value}}
+                </div>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <div id="cityList" style="margin-left: 12px">
+                <el-cascader v-model="citys" placeholder="工作地区" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div hidden sign="workCity" v-for="i in cityss">
+                    {{i.value}}
+                </div>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <div id="workYear" style="margin-left: 12px">
+                <el-cascader v-model="workYear" placeholder="工作经验" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div hidden sign="workYear" v-for="i in workYears">
+                    {{i.value}}
+                </div>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <div id="grade" style="margin-left: 12px">
+                <el-cascader v-model="grade" placeholder="会员等级" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div hidden sign="rank" v-for="i in grades">
+                    {{i.value}}
+                </div>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <div hidden id="sort" style="margin-left: 12px">
+                <el-cascader v-model="sort" placeholder="上次登录时间" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div  sign="sort" v-for="i in sorts">
+                    {{i.value}}
+                </div>
+            </divhidden>
+        </div>
+        </div>
+        <label class="layui-form-label">搜索条件</label>
+        <div class="layui-input-inline">
+            <input type="text" id="keys" th:value="${keys}" value="" placeholder="公司名、手机号" class="layui-input search_input">
+        </div>
+        <a class="layui-btn search_btn" id="select">搜索</a>
+    </div>
+    <table id="data_table" lay-filter="test"></table>
+    <b style="margin-bottom: 1px;float:right" id="page"></b>
+
+</form>
+<script src="/js/jquery/jquery.min.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
+<script src="/js/salesManagement/erprisePush.js"></script>
+<script>
+    console.log($("#firstClassId").val(),$("#classId").val())
+    layui.use(['table','laypage','element','jquery','layer'], function() {
+        var table = layui.table;
+        var laypage = layui.laypage;
+        var laayer=layui.layer;
+        var curr = 1;
+        // var url = '/SalesManagement/EnterprisePush?keys=' + ($("#keys").val()?$("#keys").val():-1) + '&classId=' + ($("div[sign='classId']:last").html()?$("div[sign='classId']:last").html():-1) +
+        //            '&workCity=' + ($("div[sign='workCity']:last").html()?$("div[sign='workCity']:last").html():-1 ) + '&workYear=' + ($("div[sign='workYear']:last").html()?$("div[sign='workYear']:last").html():-1)
+        //            + '&rank=' + ($("div[sign='rank']:last").html()?$("div[sign='rank']:last").html():-1)+ '&sort=' + ($("div[sign='sort']:last").html()?$("div[sign='sort']:last").html():1);
+        // var url = '/SalesManagement/EnterprisePush?keys=' + $("#keys").val() + '&classId=' + ($("div[sign='classId']:last").html()?$("div[sign='classId']:last").html():-1)+
+        //            '&workCity=' + ($("div[sign='workCity']:last").html()?$("div[sign='workCity']:last").html():-1 )+ '&workYear=' + ($("div[sign='workYear']:last").html()?$("div[sign='workYear']:last").html():-1)
+        //            + '&rank=' + ($("div[sign='rank']:last").html()?$("div[sign='rank']:last").html():-1)+ '&sort=' + ($("div[sign='sort']:last").html()?$("div[sign='sort']:last").html():-1);
+
+
+        //渲染列表
+        table.render({
+            elem: '#data_table'
+            , limit: 15
+            // , url: '/SalesManagement/getRecruitList?keys=' + ($("#keys").val()?$("#keys").val():-1) + '&classId=' + ($("div[sign='classId']:last").html()?$.trim($("div[sign='classId']:last").text()):-1)+
+            //     '&workCity=' + ($("div[sign='workCity']:last").html()?$.trim($("div[sign='workCity']:last").text()):-1 )+ '&workYear=' + ($("div[sign='workYear']:last").html()?$.trim($("div[sign='workYear']:last").text()):-1)
+            //     + '&rank=' + ($("div[sign='rank']:last").html()?$.trim($("div[sign='rank']:last").text()):-1)+ '&sort=' + ($("div[sign='sort']:last").html()?$.trim($("div[sign='sort']:last").text()):1)
+            , url: '/SalesManagement/getRecruitList?keys=' + ($("#keys").val()?$("#keys").val():"") + '&classId=' + ($("#classId").val()?$("#classId").val():-1)+
+                '&workCity=' + ($("#workCity").val()?$("#workCity").val():-1 )+ '&workYear=' + ($("#_workYear").val()?$("#_workYear").val():-1)
+                + '&rank=' + ($("#rank").val()?$("#rank").val():-1)+ '&sort=' + ($("#_sort").val()?$("#_sort").val():1)
+            , cols: [
+                [
+                    {field: 'workName', title: '<b>招聘职位</b>', width: '8%'}
+                    , {field: 'city', title: '<b>工作地区</b>', width: "6%"}
+                    , {field: 'money', title: '<b>薪资范围</b>', width: "8%", sort: true}
+                    , {field: 'workYearString', title: '<b>工作经验</b>', width: "8%", sort: true}
+                    , {field: 'rankString', title: '<b>VIP等级</b>', width: "8%", sort: true}
+                    , {field: 'companyName', title: '<b>公司名</b>', width: "15%"}
+                    , {field: 'phone', title: '<b>手机号码</b>', width: "10%"}
+                    , {field: 'lastLoginTime', title: '<b>上次登录时间</b>', width: "12%", sort: true}
+                    , {field: 'releaseTime', title: '<b>发布时间</b>', width: "12%", sort: true}
+                    , {field: 'pushCount', title: '<b>已推送人才</b>', width: "8%", sort: true}
+                    , {field: 'button', title: '<b>操作</b>', width: "6%"}
+                ]
+            ]
+        });
+
+
+        //分页处理
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+            , count: $("#dataCount").val()//数据总数，从服务端得到
+            , limit: 15
+            , skip: true
+            , jump: function (obj, first) {
+                //obj包含了当前分页的所有参数，比如：
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据
+                console.log(obj.limit); //得到每页显示的条数
+                console.log("渲染分页");
+                curr = obj.curr;
+                // url+='&curr='+obj.curr;
+                table.render({
+                    elem: '#data_table'
+                    , limit: 15
+                  ,url:'/SalesManagement/getRecruitList?keys=' + ($("#keys").val()?$("#keys").val():"") + '&classId=' + ($("#classId").val()?$("#classId").val():-1)+
+                        '&workCity=' + ($("#workCity").val()?$("#workCity").val():-1 )+ '&workYear=' + ($("#_workYear").val()?$("#_workYear").val():-1)
+                        + '&rank=' + ($("#rank").val()?$("#rank").val():-1)+ '&sort=' + ($("#_sort").val()?$("#_sort").val():1)+'&curr='+curr
+                    , cols: [
+                        [
+                            {field: 'workName', title: '<b>招聘职位</b>', width: '8%'}
+                            , {field: 'city', title: '<b>工作地区</b>', width: "6%"}
+                            , {field: 'money', title: '<b>薪资范围</b>', width: "8%", sort: true}
+                            , {field: 'workYearString', title: '<b>工作经验</b>', width: "8%", sort: true}
+                            , {field: 'rankString', title: '<b>VIP等级</b>', width: "8%", sort: true}
+                            , {field: 'companyName', title: '<b>公司名</b>'}
+                            , {field: 'phone', title: '<b>手机号码</b>', width: "10%"}
+                            , {field: 'lastLoginTime', title: '<b>上次登录时间</b>', width: "12%", sort: true}
+                            , {field: 'releaseTime', title: '<b>发布时间</b>', width: "12%", sort: true}
+                            , {field: 'pushCount', title: '<b>已推送人才</b>', width: "8%", sort: true}
+                            , {field: 'button', title: '<b>操作</b>', width: "6%"}
+                        ]
+                    ]
+                });
+
+            }
+        });
+
+        //给查询按钮搞个监听事件
+        $("#select").click(function () {
+            var classId=($("div[sign='classId']:last").html()?$.trim($("div[sign='classId']:last").text()):-1);
+            if(classId==-1){
+                if($("#classId").val()!=-1){
+                    classId=$("#classId").val();
+                }
+            }
+            var workCity=($("div[sign='workCity']:last").html()?$.trim($("div[sign='workCity']:last").text()):-1 );
+            if(workCity==-1){
+                if($("#workCity").val()!=-1){
+                    workCity=$("#workCity").val();
+                }
+            }
+            var workYear=($("div[sign='workYear']:last").html()?$.trim($("div[sign='workYear']:last").text()):-1);
+            if(workYear==-1){
+                if($("#_workYear").val()!=-1){
+                    workYear=$("#_workYear").val();
+                }
+            }
+            var rank=($("div[sign='rank']:last").html()?$.trim($("div[sign='rank']:last").text()):-1);
+            if(rank==-1){
+                if($("#rank").val()!=-1){
+                    rank=$("#rank").val();
+                }
+            }
+            var sort=($("div[sign='sort']:last").html()?$.trim($("div[sign='sort']:last").text()):-1);
+            if(sort==-1){
+                if($("#_sort").val()!=-1){
+                    sort=$("#_sort").val();
+                }
+            }
+            var firstClassId=($("div[sign='classId']:first").html()?$.trim($("div[sign='classId']:first").text()):-1);
+            if(firstClassId==-1){
+                if($("#firstClassId").val()!=-1){
+                    firstClassId=$("#firstClassId").val();
+                }
+            }
+            var firstWorkCity=($("div[sign='workCity']:first").html()?$.trim($("div[sign='workCity']:first").text()):-1 );
+            if(firstWorkCity==-1){
+                if($("#firstWorkCity").val()!=-1){
+                    firstWorkCity=$("#firstWorkCity").val();
+                }
+            }
+            var value='keys=' + ($("#keys").val()?$("#keys").val():"") + '&classId=' + classId+
+            '&workCity=' +workCity+ '&workYear=' + workYear
+            + '&rank=' +rank + '&sort=' + sort
+            +'&firstClassId='+firstClassId
+            +'&firstWorkCity='+firstWorkCity;
+            window.location.href='/SalesManagement/EnterprisePush?' + value;
+        })
+
+        //操作
+        $("body").on("click",".choose",function(){
+            var companyId=$(this).attr("companyId");
+            var companyName=$(this).attr("companyName");
+            var className=$(this).attr("className");
+            var classId=$(this).attr("classId");
+            var index = layui.layer.open({
+                title : "选择人才",
+                type : 2,
+                area: ['100%', '100%'],
+                content : "/SalesManagement/personnelChoose?companyId="+companyId+"&companyName="+companyName+"&className="+className+"&classId="+classId,
+            })
+            return false;
+        })
+    })
+</script>
+</body>
+</html>
