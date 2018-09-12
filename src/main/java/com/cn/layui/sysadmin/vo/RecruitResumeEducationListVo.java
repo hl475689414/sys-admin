@@ -11,6 +11,15 @@ public class RecruitResumeEducationListVo {
     private String educationName; //学历文本
     private String beginTime; //入学时间
     private String endTime; //毕业时间
+    private String educationTime; //在学时间段 -->入学时间-毕业时间
+
+    public String getEducationTime() {
+        return beginTime+" - "+endTime;
+    }
+
+    public void setEducationTime(String educationTime) {
+        this.educationTime = educationTime;
+    }
 
     public int getId() {
         return id;

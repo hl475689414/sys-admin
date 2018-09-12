@@ -3,13 +3,9 @@ package com.cn.layui.sysadmin.service.impl;
 import com.cn.layui.sysadmin.dao.SystemMenuMapper;
 import com.cn.layui.sysadmin.entity.SystemMenu;
 import com.cn.layui.sysadmin.service.SystemMenuService;
-import com.cn.layui.sysadmin.utils.JsonResult;
+import net.sf.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -40,8 +36,23 @@ public class SystemMenuServiceImpl  implements SystemMenuService {
 
     public List<Object> getSysMenuList() {
         List<SystemMenu> listmenu = systemMenuMapper.getAllMenuList();
+        JSONArray jsonArray = JSONArray.fromObject(listmenu);
+        System.out.println("原数据："+jsonArray);
+       if(listmenu!=null){
+           listmenu.remove(0);
+           listmenu.remove(0);
+           listmenu.remove(0);
+       }
+        SystemMenu systemMenu = new SystemMenu();
+        systemMenu.setId(59);
+        systemMenu.setParentId(0);
+        systemMenu.setName("后台首页");
+        systemMenu.setUrl("main");
+        systemMenu.setIcon("icon-computer");
+        listmenu.add(0, systemMenu);
         listAllTree = new ArrayList<>();
         List<Object> list = generateAllMenuTree(listmenu);
+
         return list;
     }
 

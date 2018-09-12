@@ -1,6 +1,6 @@
-package com.wmq.sys.utils.mybatis.paginatc.dialect;
+package com.cn.layui.sysadmin.utils.paginatc.dialect;
 
-import com.wmq.sys.utils.mybatis.paginatc.domain.PageBounds;
+import com.cn.layui.sysadmin.utils.paginatc.domain.PageBounds;
 import org.apache.ibatis.mapping.MappedStatement;
 
 /**

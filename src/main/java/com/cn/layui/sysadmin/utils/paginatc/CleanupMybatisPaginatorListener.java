@@ -1,4 +1,4 @@
-package com.wmq.sys.utils.mybatis.paginatc;
+package com.cn.layui.sysadmin.utils.paginatc;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

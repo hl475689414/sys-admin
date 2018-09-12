@@ -1,12 +1,12 @@
-package com.wmq.sys.utils;
+package com.cn.layui.sysadmin.utils;
 
 /**
  * Created by Administrator on 2016/6/1 0001.
  */
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

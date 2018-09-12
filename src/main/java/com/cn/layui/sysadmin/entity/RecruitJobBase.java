@@ -262,4 +262,6 @@ public class RecruitJobBase {
     public void setRecommendnum(Integer recommendnum) {
         this.recommendnum = recommendnum;
     }
+
+
 }

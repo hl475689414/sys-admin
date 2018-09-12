@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.RecruitResumeProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.RecruitResumeProject" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="project" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cotent" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="projectURL" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="projectResult" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="workRole" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="beginTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="endTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <select id="getResumeProjectList" resultType="com.cn.layui.sysadmin.vo.RecruitResumeProjectListVo" parameterType="java.lang.Integer" >
+    SELECT id,project,projectURL,workRole,cotent,projectResult FROM recruit_resume_project WHERE userId = #{userId} ORDER BY endTime DESC
+  </select>
+</mapper>

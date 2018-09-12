@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.wmq.sys.utils.mybatis.paginatc.support;
+package com.cn.layui.sysadmin.utils.paginatc.support;
 
-import com.wmq.sys.utils.mybatis.paginatc.dialect.Dialect;
+import com.cn.layui.sysadmin.utils.paginatc.dialect.Dialect;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.transaction.Transaction;
@@ -47,8 +47,8 @@ public class SQLHelp {
      * @throws SQLException sql查询错误
      */
     public static int getCount(
-                               final MappedStatement mappedStatement, final Transaction transaction, final Object parameterObject,
-                               final BoundSql boundSql, Dialect dialect) throws SQLException {
+            final MappedStatement mappedStatement, final Transaction transaction, final Object parameterObject,
+            final BoundSql boundSql, Dialect dialect) throws SQLException {
         final String count_sql = dialect.getCountSQL();
         logger.debug("Total count SQL [{}] ", count_sql);
         logger.debug("Total count Parameters: {} ", parameterObject);

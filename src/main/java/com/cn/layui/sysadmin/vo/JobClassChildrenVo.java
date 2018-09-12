@@ -4,22 +4,22 @@ package com.cn.layui.sysadmin.vo;
  * Created by 李怀鹏 on 2018/6/25.
  */
 public class JobClassChildrenVo {
-    private int id;
-    private String title;
+    private int value;
+    private String label;
 
-    public int getId() {
-        return id;
+    public int getValue() {
+        return value;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setValue(int value) {
+        this.value = value;
     }
 
-    public String getTitle() {
-        return title;
+    public String getLabel() {
+        return label;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

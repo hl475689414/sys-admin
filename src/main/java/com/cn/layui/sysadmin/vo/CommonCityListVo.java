@@ -6,31 +6,31 @@ import java.util.List;
  * Created by 李怀鹏 on 2018/6/25.
  */
 public class CommonCityListVo {
-    private int id;
-    private String title;
-    private List<CommonCityChildrenVo> childrenList;
+    private int value;
+    private String label;
+    private List<CommonCityChildrenVo> children;
 
-    public int getId() {
-        return id;
+    public int getValue() {
+        return value;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setValue(int value) {
+        this.value = value;
     }
 
-    public String getTitle() {
-        return title;
+    public String getLabel() {
+        return label;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-    public List<CommonCityChildrenVo> getChildrenList() {
-        return childrenList;
+    public List<CommonCityChildrenVo> getChildren() {
+        return children;
     }
 
-    public void setChildrenList(List<CommonCityChildrenVo> childrenList) {
-        this.childrenList = childrenList;
+    public void setChildren(List<CommonCityChildrenVo> children) {
+        this.children = children;
     }
 }

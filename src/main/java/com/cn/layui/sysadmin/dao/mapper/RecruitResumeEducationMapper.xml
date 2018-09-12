@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.RecruitResumeEducationMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.RecruitResumeEducation" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="college" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="major" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="education" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="beginTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="endTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="schoolExp" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="className" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
+
+  <select id="getResumeEducationList" resultType="com.cn.layui.sysadmin.vo.RecruitResumeEducationListVo" parameterType="java.lang.Integer" >
+    SELECT id,college,major,education,beginTime,endTime FROM recruit_resume_education WHERE userId = #{userId}
+  </select>
+</mapper>

@@ -6,31 +6,31 @@ import java.util.List;
  * Created by 李怀鹏 on 2018/6/25.
  */
 public class JobClassListVo {
-    private int id;
-    private String title;
-    private List<JobClassChildrenVo> childrenList;
+    private int value;
+    private String label;
+    private List<JobClassChildrenVo> children;
 
-    public int getId() {
-        return id;
+    public int getValue() {
+        return value;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setValue(int value) {
+        this.value = value;
     }
 
-    public String getTitle() {
-        return title;
+    public String getLabel() {
+        return label;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-    public List<JobClassChildrenVo> getChildrenList() {
-        return childrenList;
+    public List<JobClassChildrenVo> getChildren() {
+        return children;
     }
 
-    public void setChildrenList(List<JobClassChildrenVo> childrenList) {
-        this.childrenList = childrenList;
+    public void setChildren(List<JobClassChildrenVo> children) {
+        this.children = children;
     }
 }

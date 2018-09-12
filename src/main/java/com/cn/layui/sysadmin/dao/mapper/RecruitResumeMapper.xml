@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.RecruitResumeMapper" >
+    <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.RecruitResume" >
+        <constructor >
+            <idArg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="birthday" jdbcType="DATE" javaType="java.util.Date" />
+            <arg column="nation" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="nativePlace" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="livePlace" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="startWorkYear" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="education" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="tel" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="intro" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="tag" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="oldPosition" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="oldCompany" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="wrokType" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="askRemark" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="viewNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="senceUrl" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="docUrl" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="completeRate" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="isDelete" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="isOverseas" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="jobWantedClass" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="workLanguage" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="exportExperience" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="businessFunctions" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="createTime" jdbcType="BIGINT" javaType="java.lang.Long" />
+            <arg column="updateTime" jdbcType="BIGINT" javaType="java.lang.Long" />
+            <arg column="entryState" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="entryTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="sysUserId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+        </constructor>
+    </resultMap>
+
+    <select id="getPersonalUserInfo" resultType="com.cn.layui.sysadmin.vo.PersonalUserInfoVo" parameterType="java.lang.Integer" >
+    SELECT startWorkYear,intro,senceUrl FROM recruit_resume WHERE userId = #{userId}
+  </select>
+
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.ConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.Config" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="value" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="types" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, value, types
+  </sql>
+
+  <select id="selectByCodeTypes" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from config
+    where code = #{code} AND types = #{types}
+  </select>
+
+</mapper>

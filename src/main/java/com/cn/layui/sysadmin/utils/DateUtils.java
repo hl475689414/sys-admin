@@ -1,4 +1,4 @@
-package com.wmq.sys.utils;
+package com.cn.layui.sysadmin.utils;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 

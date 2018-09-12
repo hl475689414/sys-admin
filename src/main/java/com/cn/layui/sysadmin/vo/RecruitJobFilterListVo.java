@@ -13,6 +13,19 @@ public class RecruitJobFilterListVo {
     private String cityName; //城市名称
     private int workPayStart; //开始薪资
     private int workPayEnd; //结束薪资
+    private String wantMoney;//希望薪资 -->开始薪资-结束薪资
+
+
+    public String getWantMoney() {
+        if(workPayEnd!=0){
+            return workPayStart+" - "+workPayEnd;
+        }
+        return "面议";
+    }
+
+    public void setWantMoney(String wantMoney) {
+        this.wantMoney = wantMoney;
+    }
 
     public int getId() {
         return id;

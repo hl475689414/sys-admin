@@ -32,6 +32,10 @@ public class SysAdminController {
     public String addUser(){
         return "addUser";
     }
+    @RequestMapping(value = "table")
+    public String table(){
+        return "/user/table";
+    }
 
     @RequestMapping(value = "test")
     public String test(){

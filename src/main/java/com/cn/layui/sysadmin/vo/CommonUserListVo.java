@@ -14,6 +14,25 @@ public class CommonUserListVo {
     private String companyName; //公司名称
     private int state; //状态
     private int vip; //vip
+    private String stateName;//状态名
+    private String butt; //按钮
+
+
+    public String getButt() {
+        return butt;
+    }
+
+    public void setButt(String butt) {
+        this.butt = butt;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
 
     public int getId() {
         return id;

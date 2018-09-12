@@ -1,10 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta charset="utf-8">
+    <title>用户列表</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <style>
+        .layui-table-cell{
+            height:31px;
+            line-height: 31px;
+            margin-top: 0px;
+        }
+    </style>
 </head>
 <body>
-$END$
+<input  id="dataCount" hidden th:value="${dataCount}"/>
+<br>
+<form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户性别</label>
+        <div class="layui-input-inline">
+            <select id="sex" lay-filter="aihao">
+                <option value="9">请选择</option>
+                <option  th:selected="${sex==0}"  value="0">男</option>
+                <option th:selected="${sex==1}" value="1">女</option>
+            </select>
+        </div>
+        <label class="layui-form-label">用户状态</label>
+        <div class="layui-input-inline">
+            <select id="status" lay-filter="aihao">
+                <option value="9">请选择</option>
+                <option  th:selected="${state==0}" value="0">正常</option>
+                <option th:selected="${state==1}" value="1">禁用</option>
+            </select>
+        </div>
+        <label class="layui-form-label">所属企业</label>
+        <div class="layui-input-inline">
+            <select id="isCompany" lay-filter="aihao">
+                <option value="9">请选择</option>
+                <option th:selected="${isCompany==1}"  value="1">有</option>
+                <option th:selected="${isCompany==0}"  value="0">无</option>
+            </select>
+        </div>
+
+        <label class="layui-form-label">搜索条件</label>
+        <div class="layui-input-inline">
+            <input type="text" id="keys" th:value="${keys}" value="" placeholder="用户手机号码/姓名/所属企业" class="layui-input search_input">
+        </div>
+        <a class="layui-btn search_btn" id="select">查询</a>
+    </div>
+    <table id="user_table" lay-filter="test"></table>
+    <b style="margin-bottom: 1px;float:right" id="page"></b>
+
+</form>
+<script src="/js/jquery/jquery.min.js"></script>
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use(['table','laypage','element','jquery','layer'], function() {
+        var table = layui.table;
+        var laypage = layui.laypage;
+        var laayer=layui.layer;
+        var curr = 1;
+        //取值
+        var sex = $("#sex").val();
+        var status = $("#status").val();
+        var isCompany = $("#isCompany").val();
+        var keys = $("#keys").val();
+
+        //获取记录总数
+        function getCount() {
+            var dacount = 0;//初始化总数
+            $.ajax({
+                url: '/UserManagement/getCount',
+                type: 'POST', //GET
+                // async:true,    //或false,是否异步
+                data: {
+                    keys: keys
+                    , sex: sex
+                    , state: status
+                    , isCompany: isCompany
+                },
+                // dataType:'',    //返回的数据格式：json/xml/html/script/jsonp/text
+                success: function (data) {
+                    dacount = data;
+                    console.log("获取总条数")
+                }
+                , error: function () {
+                    alert("失败")
+                }
+            })
+        }
+
+
+        var url = '/UserManagement/getCommonUserList?keys=' + $("#keys").val() + '&sex=' + $("#sex").val() + '&state=' + $("#status").val() + '&curr=' + curr + '&isCompany=' + $("#isCompany").val();
+        // if(isCompany){
+        //     url+='&isCompany='+isCompany;
+        // }
+
+
+        //渲染列表
+        table.render({
+            elem: '#user_table'
+            , limit: 15
+            , url: url
+            , cols: [
+                [
+                    {field: 'id', title: '用户ID', width: '8%', sort: true}
+                    , {field: 'userName', title: '用户手机号', width: "12%"}
+                    , {field: 'trueName', title: '用户名', width: "10%"}
+                    , {field: 'gender', title: '性别', width: "6%"}
+                    , {field: 'loginTime', title: '上次登录时间', width: "20%", sort: true}
+                    , {field: 'registerTime', title: '注册时间', width: "15%", sort: true}
+                    , {field: 'companyName', title: '所属企业', width: "10%"}
+                    , {field: 'stateName', title: '用户状态', width: "8%"}
+                    , {field: 'butt', title: '操作', width: "9%"}
+                ]
+            ]
+        });
+
+
+        //分页处理
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+            , count: $("#dataCount").val()//数据总数，从服务端得到
+            , limit: 15
+            , skip: true
+            , jump: function (obj, first) {
+                //obj包含了当前分页的所有参数，比如：
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据
+                console.log(obj.limit); //得到每页显示的条数
+                console.log("渲染分页");
+                curr = obj.curr;
+                // url+='&curr='+obj.curr;
+                table.render({
+                    elem: '#user_table'
+                    ,
+                    limit: 15
+                    // ,url: '/UserManagement/getCommonUserList?keys='+keys+'&sex='+sex+'&state='+status+'&curr='+curr+'&isCompany='+isCompany
+                    ,
+                    url: '/UserManagement/getCommonUserList?keys=' + $("#keys").val() + '&sex=' + $("#sex").val() + '&state=' + $("#status").val() + '&curr=' + curr + '&isCompany=' + $("#isCompany").val()
+                    ,
+                    cols: [
+                        [
+                            {field: 'id', title: '用户ID', width: '8%', sort: true}
+                            , {field: 'userName', title: '用户手机号', width: "12%"}
+                            , {field: 'trueName', title: '用户名', width: "10%"}
+                            , {field: 'gender', title: '性别', width: "6%"}
+                            , {field: 'loginTime', title: '上次登录时间', width: "20%", sort: true}
+                            , {field: 'registerTime', title: '注册时间', width: "15%", sort: true}
+                            , {field: 'companyName', title: '所属企业', width: "10%"}
+                            , {field: 'stateName', title: '用户状态', width: "10%"}
+                            , {field: 'butt', title: '操作', width: "9%"}
+                        ]
+                    ]
+                });
+
+            }
+        });
+
+        //给查询按钮搞个监听事件
+        $("#select").click(function () {
+            window.location.href='/UserManagement/UserList?keys='+$("#keys").val()+'&sex='+$("#sex").val()+'&state='+$("#status").val()+'&isCompany='+$("#isCompany").val();
+        })
+
+        //操作
+        $("body").on("click",".userDetail",function(){  //编辑
+            // layer.alert('您点击了文章编辑按钮，由于是纯静态页面，所以暂时不存在编辑内容，后期会添加，敬请谅解。。。',{icon:6, title:'文章编辑'});
+            var uid=$(this).attr("id");
+            var isCompany=$(this).attr("isCompany");
+            var index = layui.layer.open({
+                title : "用户详情",
+                type : 2,
+                area: ['100%', '100%'],
+                content : "/UserManagement/UserDetails?uid="+uid+"&isCompany="+isCompany,
+            })
+            return false;
+
+
+        })
+    })
+</script>
 </body>
 </html>

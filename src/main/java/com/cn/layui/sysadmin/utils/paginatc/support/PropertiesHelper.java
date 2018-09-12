@@ -1,4 +1,4 @@
-package com.wmq.sys.utils.mybatis.paginatc.support;
+package com.cn.layui.sysadmin.utils.paginatc.support;
 
 import java.io.*;
 import java.util.*;

@@ -1,4 +1,4 @@
-package com.wmq.sys.utils.mybatis.paginatc.domain;
+package com.cn.layui.sysadmin.utils.paginatc.domain;
 
 import java.io.Serializable;
 

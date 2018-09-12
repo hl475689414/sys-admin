@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.RecruitResumeWorkMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.RecruitResumeWork" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="workClass" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="position" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="companyBuss" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="workTag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="beginTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="endTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="workDep" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="workResult" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="hideMyResume" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, workClass, position, company, companyBuss, workTag, beginTime, endTime, workDep, 
+    content, workResult, hideMyResume, userId
+  </sql>
+
+
+  <select id="getResumeWorkList" resultType="com.cn.layui.sysadmin.vo.RecruitResumeWorkListVo" parameterType="java.lang.Integer" >
+    SELECT rrw.id,rrw.workClass AS classId,rjc.title AS className,rrw.position,rrw.company,rrw.beginTime,rrw.endTime,rrw.workDep
+    FROM recruit_resume_work rrw
+    LEFT JOIN recruit_job_class rjc on rjc.id = rrw.workClass
+    WHERE rrw.userId = #{userId} ORDER BY beginTime DESC
+  </select>
+</mapper>

@@ -46,12 +46,66 @@
   </select>
 
   <select id="selectListByCondition" resultType="com.cn.layui.sysadmin.vo.PostPositionVo">
-    SELECT
+    SELECT rjc.title as workName,cc.`name` as city,rjb.payStart as startMoney,rjb.payEnd as endMoney,rjb.workYear as workYear
+    ,ccy.authVip as rank,ccy.fullName as companyName,cu.tel as phone,cu.loginTime as lastLoginTime,rjb.createTime as releaseTime
+    ,rjb.recommendNum as pushCount,rjb.classId as classId,rjb.companyId  as companyId
     FROM recruit_job_base rjb
     LEFT JOIN recruit_job_extend rje on rje.jobId = rjb.id
     LEFT JOIN recruit_job_class rjc on rjc.id = rjb.classId
     LEFT JOIN common_business cb on cb.id = rjb.businessId
+    LEFT JOIN common_city cc on cc.id = rjb.workCity
+    LEFT JOIN common_company ccy on ccy.id=rjb.companyId
+    LEFT JOIN  common_user cu on cu.id=rjb.userId
+    WHERE rjb.isExpress=0 AND  rjb.isDelete=0
+    <if test="classId!=null">
+        AND rjb.classId=#{classId}
+    </if>
+    <if test="workCity!=null">
+        AND rjb.workCity=#{workCity}
+    </if>
+    <if test="workYear!=null">
+        AND rjb.workYear=#{workYear}
+    </if>
+    <if test="rank!=null">
+        AND ccy.authVip=#{rank}
+    </if>
+    <if test="keys!=null">
+      AND (ccy.fullName LIKE CONCAT('%', #{keys}, '%') OR cu.tel LIKE CONCAT('%', #{keys}, '%'))
+    </if>
+    <if test="sort==1">
+        ORDER BY cu.loginTime DESC
+    </if>
+    <if test="sort==null">
+        ORDER BY cu.loginTime DESC
+    </if>
+    <if test="sort==2">
+        ORDER BY rjb.createTime DESC
+    </if>
+    limit #{curr},15
 
+  </select>
+
+  <select id="getCountByCondition" resultType="java.lang.Integer">
+      SELECT COUNT(rjb.id)
+      FROM recruit_job_base rjb
+    LEFT JOIN common_company ccy on ccy.id=rjb.companyId
+    LEFT JOIN  common_user cu on cu.id=rjb.userId
+    WHERE rjb.isExpress=0 AND  rjb.isDelete=0
+    <if test="classId!=null">
+      AND rjb.classId=#{classId}
+    </if>
+    <if test="workCity!=null">
+      AND rjb.workCity=#{workCity}
+    </if>
+    <if test="workYear!=null">
+      AND rjb.workYear=#{workYear}
+    </if>
+    <if test="rank!=null">
+      AND ccy.authVip=#{rank}
+    </if>
+    <if test="keys!=null">
+      AND (ccy.fullName LIKE CONCAT('%', #{keys}, '%') OR cu.tel LIKE CONCAT('%', #{keys}, '%'))
+    </if>
   </select>
 
 </mapper>

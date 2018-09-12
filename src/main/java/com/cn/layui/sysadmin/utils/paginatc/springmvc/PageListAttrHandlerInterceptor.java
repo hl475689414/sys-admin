@@ -1,6 +1,6 @@
-package com.wmq.sys.utils.mybatis.paginatc.springmvc;
+package com.cn.layui.sysadmin.utils.paginatc.springmvc;
 
-import com.wmq.sys.utils.mybatis.paginatc.domain.PageList;
+import com.cn.layui.sysadmin.utils.paginatc.domain.PageList;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

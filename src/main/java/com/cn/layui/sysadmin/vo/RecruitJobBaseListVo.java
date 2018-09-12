@@ -19,6 +19,24 @@ public class RecruitJobBaseListVo {
     private String educationTitle; //学历文本
     private int cityId; //城市ID
     private String cityName; //城市名称
+    private String money;//薪资范围 -->开始薪资-结束薪资
+
+
+    public String getMoney() {
+        String start=""+payStart;
+        String end=""+payEndp;
+        if(payStart==0){
+            start="面议";
+        }
+        if(payEndp==0){
+            end="面议";
+        }
+        return start+" - "+end;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
+    }
 
     public int getId() {
         return id;

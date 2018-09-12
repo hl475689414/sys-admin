@@ -12,6 +12,16 @@ public class RecruitResumeWorkListVo {
     private String beginTime; //开始时间
     private String endTime; //结束时间
     private String workDep; //所属部门
+    private String workTime; //工作的时间----->开始时间-结束时间
+
+
+    public String getWorkTime() {
+        return beginTime+" - "+endTime;
+    }
+
+    public void setWorkTime(String workTime) {
+        this.workTime = workTime;
+    }
 
     public int getId() {
         return id;

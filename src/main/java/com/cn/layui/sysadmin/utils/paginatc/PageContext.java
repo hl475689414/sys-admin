@@ -1,7 +1,7 @@
-package com.wmq.sys.utils.mybatis.paginatc;
+package com.cn.layui.sysadmin.utils.paginatc;
 
 
-import com.wmq.sys.utils.mybatis.paginatc.domain.PageBounds;
+import com.cn.layui.sysadmin.utils.paginatc.domain.PageBounds;
 
 /**
  * Created by Administrator on 2016/5/24 0024.

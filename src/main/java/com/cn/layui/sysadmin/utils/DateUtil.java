@@ -1,14 +1,15 @@
-package com.wmq.sys.utils;
+package com.cn.layui.sysadmin.utils;
 
 /**
  * Created by 李怀鹏 on 2016/6/1 0001.
  */
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Date management utilities

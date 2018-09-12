@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>人才选择</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <!--&lt;!&ndash; 引入样式 &ndash;&gt;<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+
+    <!--&lt;!&ndash; 引入组件库 &ndash;&gt;<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <style>
+        .layui-table-cell{
+            height:31px;
+            line-height: 31px;
+            margin-top: 0px;
+        }
+    </style>
+</head>
+<body>
+<input  hidden id="jobClassList"  th:value="${jobClassList}"/>
+<input  hidden id="citys"  th:value="${cityList}"/>
+<input  hidden id="dataCount"  th:value="${dataCount}"/>
+<input hidden id="classId"  th:value="${classId}"/>
+<input  hidden id="firstClassId"  th:value="${firstClassId}"/>
+<input  hidden id="workCity"  th:value="${workCity}"/>
+<input hidden  id="firstWorkCity"  th:value="${firstWorkCity}"/>
+<input  hidden id="push"  th:value="${push}"/>
+<input hidden id="_workYear"  th:value="${workYear}"/>
+<br>
+<h2>已选：<span id="className" th:text="${className}"></span>&nbsp;&nbsp;&nbsp;<span id="companyName" style="font-size: 13px" th:text="${companyName}"></span></h2>
+<br>
+<form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <div id="jobClass" style="margin-left: 12px">
+                <el-cascader v-model="jobClass" placeholder="意向职位" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div hidden sign="classId" v-for="i in jobClasss">
+                    {{i.value}}
+                </div>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <div id="cityList" style="margin-left: 12px">
+                <el-cascader v-model="citys" placeholder="工作城市" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div hidden sign="workCity" v-for="i in cityss">
+                    {{i.value}}
+                </div>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <div id="workYear" style="margin-left: 12px">
+                <el-cascader v-model="workYear" placeholder="工作经验" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div hidden sign="workYear" v-for="i in workYears">
+                    {{i.value}}
+                </div>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <div id="ispush" style="margin-left: 12px">
+                <el-cascader v-model="ispush" placeholder="是否推送过" :options="options" filterable @change="handleItemChange"></el-cascader>
+                <div  hidden sign="push" v-for="i in ispushs">
+                    {{i.value}}
+                </div>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <input type="text" id="keys" th:value="${keys}" value="" placeholder="姓名、手机号" class="layui-input search_input">
+        </div>
+        <a class="layui-btn search_btn" id="select">搜索</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>已选&nbsp;<b id="chooseMessage"></b>&nbsp;份简历</span>
+        <button id="rePush" class="layui-btn layui-btn-normal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推送&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+    </div>
+    <table id="data_table" lay-filter="test"></table>
+    <b style="margin-bottom: 1px;float:right" id="page"></b>
+
+</form>
+<script src="/js/jquery/jquery.min.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
+<script src="/js/salesManagement/personnelChoose.js"></script>
+<script>
+
+    layui.use(['table','laypage','element','jquery','layer','form'], function() {
+        var table = layui.table;
+        var laypage = layui.laypage;
+        var laayer=layui.layer;
+        var curr = 1;
+        var form=layui.form;
+
+
+        //渲染列表
+        table.render({
+            elem: '#data_table'
+            , limit: 15
+            , url: '/SalesManagement/getJobWantedInfos?keys=' + ($("#keys").val()?$("#keys").val():"") + '&classId=' + ($("#classId").val()?$("#classId").val():-1)+
+                '&workCity=' + ($("#workCity").val()?$("#workCity").val():-1 )+ '&workYear=' + ($("#_workYear").val()?$("#_workYear").val():-1)
+                + '&ispush=' + ($("#push").val()?$("#push").val():-1)
+            , cols: [
+                [
+                // {type: 'checkbox', fixed: 'left'}
+                {field: 'check', title: '', width: '2%'}
+                ,{field: 'username', title: '<b>姓名</b>', width: '10%'}
+                , {field: 'jobName', title: '<b>意向职位</b>', width: "12%"}
+                , {field: 'jobType', title: '<b>行业类型</b>', width: "14%" }
+                , {field: 'cityName', title: '<b>工作城市</b>', width: "12%"}
+                , {field: 'workYear', title: '<b>工作经验</b>', width: "12%", sort: true}
+                , {field: 'phone', title: '<b>手机号码</b>', width: "15%"}
+                , {field: 'lastLoginTime', title: '<b>上次登录时间</b>', width: "10%",sort: true}
+                , {field: 'pushCount', title: '<b>推送次数</b>', width: "11%", sort: true}
+                ]
+            ]
+        });
+
+
+        //分页处理
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+            , count: $("#dataCount").val()//数据总数，从服务端得到
+            , limit: 15
+            , skip: true
+            , jump: function (obj, first) {
+                //obj包含了当前分页的所有参数，比如：
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据
+                console.log(obj.limit); //得到每页显示的条数
+                console.log("渲染分页");
+                curr = obj.curr;
+                // url+='&curr='+obj.curr;
+                table.render({
+                    elem: '#data_table'
+                    , limit: 15
+                    ,url:'/SalesManagement/getJobWantedInfos?keys=' + ($("#keys").val()?$("#keys").val():"") + '&classId=' + ($("#classId").val()?$("#classId").val():-1)+
+                        '&workCity=' + ($("#workCity").val()?$("#workCity").val():-1 )+ '&workYear=' + ($("#_workYear").val()?$("#_workYear").val():-1)
+                        + '&ispush=' + ($("#push").val()?$("#push").val():-1)+'&curr='+curr
+                    , cols: [
+                        [
+                            // {type: 'checkbox', fixed: 'left'}
+                            {field: 'check', title: '', width: '3%'}
+                            ,{field: 'username', title: '<b>姓名</b>', width: '10%'}
+                            , {field: 'jobName', title: '<b>意向职位</b>', width: "12%"}
+                            , {field: 'jobType', title: '<b>行业类型</b>', width: "14%" }
+                            , {field: 'cityName', title: '<b>工作城市</b>', width: "12%"}
+                            , {field: 'workYear', title: '<b>工作经验</b>', width: "12%", sort: true}
+                            , {field: 'phone', title: '<b>手机号码</b>', width: "15%"}
+                            , {field: 'lastLoginTime', title: '<b>上次登录时间</b>', width: "10%",sort: true}
+                            , {field: 'pushCount', title: '<b>推送次数</b>', width: "11%", sort: true}
+                        ]
+                    ]
+                });
+
+            }
+        });
+
+        //给查询按钮搞个监听事件
+        $("#select").click(function () {
+            var classId=($("div[sign='classId']:last").html()?$.trim($("div[sign='classId']:last").text()):-1);
+            if(classId==-1){
+                if($("#classId").val()!=-1){
+                    classId=$("#classId").val();
+                }
+            }
+            var workCity=($("div[sign='workCity']:last").html()?$.trim($("div[sign='workCity']:last").text()):-1 );
+            if(workCity==-1){
+                if($("#workCity").val()!=-1){
+                    workCity=$("#workCity").val();
+                }
+            }
+            var workYear=($("div[sign='workYear']:last").html()?$.trim($("div[sign='workYear']:last").text()):-1);
+            if(workYear==-1){
+                if($("#_workYear").val()!=-1){
+                    workYear=$("#_workYear").val();
+                }
+            }
+
+            var push=($("div[sign='push']:last").html()?$.trim($("div[sign='push']:last").text()):-1);
+            if(push==-1){
+                if($("#push").val()!=-1){
+                    push=$("#push").val();
+                }
+            }
+            var firstClassId=($("div[sign='classId']:first").html()?$.trim($("div[sign='classId']:first").text()):-1);
+            if(firstClassId==-1){
+                if($("#firstClassId").val()!=-1){
+                    firstClassId=$("#firstClassId").val();
+                }
+            }
+            var firstWorkCity=($("div[sign='workCity']:first").html()?$.trim($("div[sign='workCity']:first").text()):-1 );
+            if(firstWorkCity==-1){
+                if($("#firstWorkCity").val()!=-1){
+                    firstWorkCity=$("#firstWorkCity").val();
+                }
+            }
+            var value='keys=' + ($("#keys").val()?$("#keys").val():"") + '&classId=' + classId+
+                '&workCity=' +workCity+ '&workYear=' + workYear
+                + '&push=' +push
+                +'&firstClassId='+firstClassId+'&className='+$("#className").text()+'&companyName='+$("#companyName").text()
+                +'&firstWorkCity='+firstWorkCity;
+            window.location.href='/SalesManagement/personnelChoose?' + value;
+        })
+
+        //托送委托事件
+        $("body").on("click","#rePush",function(){
+            var userIds=[];
+           $.each($("input:checked"),function () {
+               var $userId=$(this).attr("userId")
+                userIds.push($userId);
+           })
+            $.post("/SalesManagement/push",{userIds:userIds},function (data) {
+
+            })
+
+        })
+    })
+
+    //为复选框添加change事件
+    $(document).on("click","td[data-field='check']",function () {
+      //  var $input=$(this).find("input") 当前input
+        var length=$("input:checked").length;
+        $("#chooseMessage").html(length);
+    })
+
+</script>
+</body>
+</html>

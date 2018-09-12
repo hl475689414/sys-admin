@@ -1,15 +1,18 @@
-package com.wmq.sys.utils.mybatis.paginatc;
+package com.cn.layui.sysadmin.utils.paginatc;
 
-import com.wmq.sys.utils.mybatis.paginatc.dialect.Dialect;
-import com.wmq.sys.utils.mybatis.paginatc.domain.PageBounds;
-import com.wmq.sys.utils.mybatis.paginatc.domain.Paginator;
-import com.wmq.sys.utils.mybatis.paginatc.support.PropertiesHelper;
-import com.wmq.sys.utils.mybatis.paginatc.support.SQLHelp;
+import com.cn.layui.sysadmin.utils.paginatc.dialect.Dialect;
+import com.cn.layui.sysadmin.utils.paginatc.domain.PageBounds;
+import com.cn.layui.sysadmin.utils.paginatc.domain.Paginator;
+import com.cn.layui.sysadmin.utils.paginatc.support.PropertiesHelper;
+import com.cn.layui.sysadmin.utils.paginatc.support.SQLHelp;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.mapping.*;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.MappedStatement.Builder;
+import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
@@ -19,7 +22,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.*;
 
 

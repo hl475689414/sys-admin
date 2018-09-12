@@ -1,9 +1,9 @@
-package com.wmq.sys.service.impl;
+package com.cn.layui.sysadmin.service.impl;
 
-import com.wmq.sys.entity.SystemUser;
-import com.wmq.sys.utils.base.Base;
-import com.wmq.sys.utils.mybatis.paginatc.PageContext;
-import com.wmq.sys.utils.mybatis.paginatc.domain.PageBounds;
+import com.cn.layui.sysadmin.entity.SystemUser;
+import com.cn.layui.sysadmin.utils.base.Base;
+import com.cn.layui.sysadmin.utils.paginatc.PageContext;
+import com.cn.layui.sysadmin.utils.paginatc.domain.PageBounds;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 

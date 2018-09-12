@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.RecruitResumeVideoMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.RecruitResumeVideo" >
+    <constructor >
+      <idArg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="showVideo" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="thumbnail" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="videoId" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userId, showVideo, url, thumbnail, state, videoId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from recruit_resume_video
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+
+</mapper>

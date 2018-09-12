@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户详情</title>
+    <style type="text/css">
+        div{
+            height: 30px;
+            line-height: 30px;
+
+        }
+        body>div{
+            margin-left: 12px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
+    <script type="text/javascript" src="/layui/layui.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<input id="id" hidden="hidden" th:value="${uid}">
+<h2><span>用户详情</span></h2><br>
+
+<div><b>用户状态：</b>&nbsp;&nbsp;<span id="status"></span></div><hr>
+<div><b>用户ID:</b>&nbsp;&nbsp;<span id="userId"></span></div><hr>
+<div><b>用户手机号:</b>&nbsp;&nbsp;<span id="phone"></span></div><hr>
+<div><b>用户姓名:</b>&nbsp;&nbsp;<span id="name"></span></div><hr>
+<div><b>用户性别:</b>&nbsp;&nbsp;<span id="sex"></span></div><hr>
+<div><b>微信:</b>&nbsp;&nbsp;<span id="wx"></span></div><hr>
+<div><b>上次登录时间:</b>&nbsp;&nbsp;<span id="loginTime"></span></div><hr>
+<div><b>注册时间:</b>&nbsp;&nbsp;<span id="reTime"></span></div><br><br>
+
+<h2><span>企业信息</span></h2><br>
+<form action="" class="layui-form layui-form-pane">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司全称</label>
+        <div class="layui-input-block">
+            <input type="text" th:value="${info.fullName}" disabled="false" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司简称</label>
+        <div class="layui-input-block">
+            <input type="text"  th:value="${info.title}"  disabled="false" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">企业地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="video"  th:value="${info.address}" id="video" disabled="false" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司官网</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="false" th:value="${info.website}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">接受简历邮箱</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="false" th:value="${info.email}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">视频秀</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="false" th:value="${info.jobVideoUrl}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">企业VIP等级</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="false" th:value="${info.authVip}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司行业</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="false" th:value="${info.businessName}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">企业规模</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="false" th:value="${info.staffNum}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">场景秀</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="false" th:value="${info.senceUrl}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">团队亮点</label>
+        <div class="layui-input-block">
+            <input type="text" disabled="false" th:value="${info.starText}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">团队介绍</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" th:value="${info.content}" disabled="false" id="advantage" class="layui-textarea"></textarea>
+        </div>
+    </div>
+</form>
+<br><br><br><br><br><br>
+<h2><span>已发布职位</span></h2><br>
+<table  class="table">
+    <thead>
+    <tr>
+        <th>职位类型</th>
+        <th>状态</th>
+        <th>职位名称</th>
+        <th>行业要求</th>
+        <th>薪资范围</th>
+        <th>经验要求</th>
+        <th>学历要求</th>
+        <th>工作城市</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr  th:each="info : ${info.recruitJobBaseListVos}" >
+        <td th:text="${info.className}"></td>
+        <td th:text="${info.displayState}"></td>
+        <td th:text="${info.title}"></td>
+        <td th:text="${info.businessTitle}"></td>
+        <td th:text="${info.money}"></td>
+        <td th:text="${info.workYearTitle}"></td>
+        <td th:text="${info.educationTitle}"></td>
+        <td th:text="${info.cityName}"></td>
+    </tr>
+    </tbody>
+</table>
+
+    <script>
+        $("h2>span").css("color","midnightblue");
+        $("h4").css({"background":"#5FB878"});
+
+
+        $.ajax({
+            type : "POST",  //提交方式
+            url : "/UserManagement/getUserInfo",//路径
+            data : {
+                userId : $("#id").val()
+            },//数据，这里使用的是Json格式进行传输
+            success : function(result) {//返回数据根据结果进行相应的处理
+                var userInfo=result.data
+                if(userInfo.state==0){
+                    $("#status").html("正常");
+                }else{
+                    $("#status").html("关闭");
+
+                }
+                if(userInfo.gender==1){
+                    $("#sex").html("男");
+                }else if(userInfo.gender==0){
+                    $("#sex").html("女");
+
+                }
+                $("#userId").html(userInfo.id);
+                $("#phone").html(userInfo.userName);
+                $("#name").html(userInfo.trueName);
+                $("#wx").html(userInfo.weixin);
+                $("#loginTime").html(userInfo.loginTime);
+                $("#reTime").html(userInfo.registerTime);
+
+            }
+        });
+
+    </script>
+</body>
+</html>

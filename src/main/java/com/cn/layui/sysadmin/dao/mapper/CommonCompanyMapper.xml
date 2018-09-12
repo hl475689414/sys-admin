@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.CommonCompanyMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.CommonCompany" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="logo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="fullName" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="website" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="business" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sceneUrl" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="staffNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="starText" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="city" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="phase" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="finance" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="slogan" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="longitude" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="latitude" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="masterUserId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="workImg" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="licenseImg" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="authState" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="successTalkTimes" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="talkTimes" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="isDelete" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="loginTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="fullRate" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="authOrder" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="authVip" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="openTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="expireTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="developmentResources" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="managementType" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="professionType" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="setupTime" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, logo, title, fullName, website, address, business, sceneUrl, staffNum, starText, 
+    city, phase, finance, slogan, content, longitude, latitude, masterUserId, workImg, 
+    licenseImg, authState, createTime, successTalkTimes, talkTimes, isDelete, loginTime, 
+    fullRate, authOrder, authVip, openTime, expireTime, developmentResources, managementType, 
+    professionType, setupTime
+  </sql>
+
+  <select id="getCompanyUserInfoVo" resultType="com.cn.layui.sysadmin.vo.CompanyUserInfoVo" parameterType="java.lang.Integer" >
+    SELECT cc.id AS companyId,cc.authVip,cc.fullName,cus.position,cc.title,cc.website,cc.address,cus.email,cc.business,cb.`name` AS businessName,cc.staffNum,cc.starText,cc.content,cc.sceneUrl
+    FROM common_user cus
+    LEFT JOIN common_company cc on cc.id = cus.companyId
+	LEFT JOIN common_business cb on cb.id = cc.business
+    WHERE cc.isDelete = 0 AND cus.id = #{userId}
+  </select>
+</mapper>

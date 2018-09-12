@@ -18,7 +18,7 @@ public class JsonResult implements Serializable{
 	/**
 	 * 总条数
 	 */
-	private long totalCount;
+	private long count;
 	/**
 	 * 数据封装
 	 */
@@ -42,28 +42,41 @@ public class JsonResult implements Serializable{
 	public void setData(Object data) {
 		this.data = data;
 	}
-	public long getTotalCount() {
-		return totalCount;
+
+	public long getCount() {
+		return count;
 	}
-	public void setTotalCount(long totalCount) {
-		this.totalCount = totalCount;
+
+	public void setCount(long count) {
+		this.count = count;
 	}
-	public JsonResult(int code, String message, long totalCount, Object data) {
+
+	public JsonResult(int code, String message, long count, Object data) {
 		super();
 		this.code = code;
 		this.message = message;
-		this.totalCount = totalCount;
+		this.count = count;
 		this.data = data;
 	}
 	public JsonResult(int code, String message) {
 		super();
 		this.code = code;
 		this.message = message;
-		this.totalCount = 0;
+		this.count = 0;
 		this.data = null;
 	}
 	public JsonResult() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "JsonResult{" +
+				"code=" + code +
+				", message='" + message + '\'' +
+				", count=" + count +
+				", data=" + data +
+				'}';
 	}
 }
