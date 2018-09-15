@@ -31,7 +31,7 @@
 
   <select id="getListByCondition" resultType="com.cn.layui.sysadmin.vo.JobWantedInfoVo">
     SELECT rjf.userId as id,cu.truename as userName,rjc.title as jobName,cb.`name` AS jobType,cc.`name` AS cityName,
-    rjf.workYear as workYear,cu.tel as phone,cu.loginTime as lastLoginTime,rjf.recommendNum as pushCount
+    rjf.workYear as workYear,cu.tel as phone,cu.loginTime as lastLoginTime,rjf.recommendNum as pushCount,rjf.id as filterId
     FROM recruit_job_filter rjf
     LEFT JOIN common_user  cu on cu.id=rjf.userId
     LEFT  JOIN recruit_job_class rjc on rjc.id=rjf.workClassId
@@ -93,6 +93,14 @@
       AND rjf.workYear &lt;= #{endWorkYear}
     </if>
   </select>
+
+  <update id="updateRecommendNum" parameterType="java.lang.Integer">
+      UPDATE recruit_job_filter
+      <set>
+        recommendNum=recommendNum+1
+      </set>
+      WHERE id=#{id}
+  </update>
 
 
 </mapper>

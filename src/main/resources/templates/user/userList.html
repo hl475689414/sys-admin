@@ -96,12 +96,13 @@
         //     url+='&isCompany='+isCompany;
         // }
 
-
+        var index = layer.load(1); //添加laoding,0-2两种方式
         //渲染列表
         table.render({
             elem: '#user_table'
             , limit: 15
             , url: url
+            ,loading: true
             , cols: [
                 [
                     {field: 'id', title: '用户ID', width: '8%', sort: true}
@@ -115,6 +116,9 @@
                     , {field: 'butt', title: '操作', width: "9%"}
                 ]
             ]
+            ,done: function (res) {   //返回数据执行回调函数
+                layer.close(index);    //返回数据关闭loading
+            }
         });
 
 
@@ -125,13 +129,14 @@
             , count: $("#dataCount").val()//数据总数，从服务端得到
             , limit: 15
             , skip: true
+            ,loading: true
             , jump: function (obj, first) {
                 //obj包含了当前分页的所有参数，比如：
                 console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据
                 console.log(obj.limit); //得到每页显示的条数
                 console.log("渲染分页");
                 curr = obj.curr;
-                // url+='&curr='+obj.curr;
+                var index = layer.load(1); //添加laoding,0-2两种方式
                 table.render({
                     elem: '#user_table'
                     ,
@@ -153,6 +158,9 @@
                             , {field: 'butt', title: '操作', width: "9%"}
                         ]
                     ]
+                    ,done: function (res) {   //返回数据执行回调函数
+                        layer.close(index);    //返回数据关闭loading
+                    }
                 });
 
             }

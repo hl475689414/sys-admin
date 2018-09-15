@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.layui.sysadmin.dao.SysResumeRecommendCompanyMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.layui.sysadmin.entity.SysResumeRecommendCompany" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="recommendUserId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="jobBaseId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="filterId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="sysUserId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, recommendUserId, jobBaseId, filterId, userId, sysUserId, createTime
+  </sql>
+
+  <select id="getPushRecord" resultType="java.lang.Integer" parameterType="com.cn.layui.sysadmin.entity.SysResumeRecommendCompany" >
+    SELECT COUNT(1) FROM sys_resume_recommend_company WHERE recommendUserId = #{recommenduserid,jdbcType=INTEGER} AND jobBaseId = #{jobbaseid,jdbcType=INTEGER} AND filterId = #{filterid,jdbcType=INTEGER} AND userId = #{userid,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insertSelective" parameterType="com.cn.layui.sysadmin.entity.SysResumeRecommendCompany" >
+    insert into sys_resume_recommend_company
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="recommenduserid != null" >
+        recommendUserId,
+      </if>
+      <if test="jobbaseid != null" >
+        jobBaseId,
+      </if>
+      <if test="filterid != null" >
+        filterId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="sysuserid != null" >
+        sysUserId,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="recommenduserid != null" >
+        #{recommenduserid,jdbcType=INTEGER},
+      </if>
+      <if test="jobbaseid != null" >
+        #{jobbaseid,jdbcType=INTEGER},
+      </if>
+      <if test="filterid != null" >
+        #{filterid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="sysuserid != null" >
+        #{sysuserid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+
+</mapper>

@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 
     <style>
-        .layui-table-cell{
-            height:31px;
+        .layui-table-cell {
+            height: 31px;
             line-height: 31px;
             margin-top: 0px;
         }
+
     </style>
 </head>
 <body>
@@ -26,6 +27,7 @@
 <input  id="_workYear" hidden th:value="${workYear}"/>
 <input  id="_sort" hidden th:value="${sort}"/>
 <br>
+
 <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
     <div class="layui-form-item">
         <div class="layui-input-inline">
@@ -85,24 +87,21 @@
 <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
 <script src="/js/salesManagement/erprisePush.js"></script>
 <script>
+
+
     console.log($("#firstClassId").val(),$("#classId").val())
     layui.use(['table','laypage','element','jquery','layer'], function() {
         var table = layui.table;
         var laypage = layui.laypage;
         var laayer=layui.layer;
         var curr = 1;
-        // var url = '/SalesManagement/EnterprisePush?keys=' + ($("#keys").val()?$("#keys").val():-1) + '&classId=' + ($("div[sign='classId']:last").html()?$("div[sign='classId']:last").html():-1) +
-        //            '&workCity=' + ($("div[sign='workCity']:last").html()?$("div[sign='workCity']:last").html():-1 ) + '&workYear=' + ($("div[sign='workYear']:last").html()?$("div[sign='workYear']:last").html():-1)
-        //            + '&rank=' + ($("div[sign='rank']:last").html()?$("div[sign='rank']:last").html():-1)+ '&sort=' + ($("div[sign='sort']:last").html()?$("div[sign='sort']:last").html():1);
-        // var url = '/SalesManagement/EnterprisePush?keys=' + $("#keys").val() + '&classId=' + ($("div[sign='classId']:last").html()?$("div[sign='classId']:last").html():-1)+
-        //            '&workCity=' + ($("div[sign='workCity']:last").html()?$("div[sign='workCity']:last").html():-1 )+ '&workYear=' + ($("div[sign='workYear']:last").html()?$("div[sign='workYear']:last").html():-1)
-        //            + '&rank=' + ($("div[sign='rank']:last").html()?$("div[sign='rank']:last").html():-1)+ '&sort=' + ($("div[sign='sort']:last").html()?$("div[sign='sort']:last").html():-1);
 
-
+        var index = layer.load(1); //添加laoding,0-2两种方式
         //渲染列表
         table.render({
             elem: '#data_table'
             , limit: 15
+            ,loading: true
             // , url: '/SalesManagement/getRecruitList?keys=' + ($("#keys").val()?$("#keys").val():-1) + '&classId=' + ($("div[sign='classId']:last").html()?$.trim($("div[sign='classId']:last").text()):-1)+
             //     '&workCity=' + ($("div[sign='workCity']:last").html()?$.trim($("div[sign='workCity']:last").text()):-1 )+ '&workYear=' + ($("div[sign='workYear']:last").html()?$.trim($("div[sign='workYear']:last").text()):-1)
             //     + '&rank=' + ($("div[sign='rank']:last").html()?$.trim($("div[sign='rank']:last").text()):-1)+ '&sort=' + ($("div[sign='sort']:last").html()?$.trim($("div[sign='sort']:last").text()):1)
@@ -124,8 +123,10 @@
                     , {field: 'button', title: '<b>操作</b>', width: "6%"}
                 ]
             ]
+            ,done: function (res) {   //返回数据执行回调函数
+                layer.close(index);    //返回数据关闭loading
+            }
         });
-
 
         //分页处理
         //执行一个laypage实例
@@ -134,6 +135,7 @@
             , count: $("#dataCount").val()//数据总数，从服务端得到
             , limit: 15
             , skip: true
+            ,loading: true
             , jump: function (obj, first) {
                 //obj包含了当前分页的所有参数，比如：
                 console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据
@@ -141,6 +143,7 @@
                 console.log("渲染分页");
                 curr = obj.curr;
                 // url+='&curr='+obj.curr;
+                var index = layer.load(1); //添加laoding,0-2两种方式
                 table.render({
                     elem: '#data_table'
                     , limit: 15
@@ -162,6 +165,9 @@
                             , {field: 'button', title: '<b>操作</b>', width: "6%"}
                         ]
                     ]
+                    ,done: function (res) {   //返回数据执行回调函数
+                        layer.close(index);    //返回数据关闭loading
+                    }
                 });
 
             }
@@ -225,11 +231,12 @@
             var companyName=$(this).attr("companyName");
             var className=$(this).attr("className");
             var classId=$(this).attr("classId");
+            var uid=$(this).attr("uid");
             var index = layui.layer.open({
                 title : "选择人才",
                 type : 2,
                 area: ['100%', '100%'],
-                content : "/SalesManagement/personnelChoose?companyId="+companyId+"&companyName="+companyName+"&className="+className+"&classId="+classId,
+                content : "/SalesManagement/personnelChoose?companyId="+companyId+"&companyName="+companyName+"&className="+className+"&classId="+classId+"&uid="+uid,
             })
             return false;
         })

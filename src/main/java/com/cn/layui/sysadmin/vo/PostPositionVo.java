@@ -1,6 +1,7 @@
 package com.cn.layui.sysadmin.vo;
 
 public class PostPositionVo {
+    private Integer uid;
     private String workName;//招聘职位
     private String city;
     private Integer startMoney;
@@ -190,5 +191,13 @@ public class PostPositionVo {
 
     public void setPushCount(Integer pushCount) {
         this.pushCount = pushCount;
+    }
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 }

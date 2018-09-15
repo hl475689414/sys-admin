@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>推送结果</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+
+</head>
+
+<body>
+<div style="margin-left: 45%;margin-top: 150px;">
+<!--<div style="width:100px;color: #FBFBFB; height:100px; background-color: #5FB878; border-radius:50px;font-size: 50px; line-height: 100px;text-align:center">&radic;</div>-->
+   <img style="width: 100px;" src="/image/timg.jpg"/>
+    <div style="font-size: 25px;margin-top: 20px">完成推送</div>
+</div>
+<div style="text-align:center;margin-top: 20px">已推送<span th:text="${sumCount}"></span>份简历到<span th:text="${companyName}"></span>企业，其中<span th:text="${successCount}"></span>份推送成功，<span th:text="${failCount}"></span>份已推送过（不作重复推送）</div>
+<div style="text-align:center; margin-top: 60px" >
+    <a class="layui-btn layui-btn-primary nima">返回企业推送</a>
+    <a class="layui-btn layui-btn-primary debi">继续推送</a>
+
+</div>
+<script src="/js/jquery/jquery.min.js"></script>
+<script>
+    $(".debi").click(function () {
+        window.history.go(-1);
+    })
+    $(".nima").click(function () {
+        window.location.href="/SalesManagement/EnterprisePush";
+
+    })
+
+</script>
+
+</body>
+</html>

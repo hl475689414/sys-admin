@@ -18,4 +18,6 @@ public interface RecruitJobBaseMapper {
     , @Param("curr")Integer curr,@Param("keys") String keys);
 
     Integer getCountByCondition(@Param("classId") Integer classId, @Param("workCity")Integer workCity,@Param("workYear") Integer workYear, @Param("rank") Integer rank,@Param("keys") String keys);
+
+    int updateRecommendNumByPrimaryKey(Integer id);
 }

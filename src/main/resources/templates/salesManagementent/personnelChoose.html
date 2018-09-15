@@ -14,6 +14,27 @@
             height:31px;
             line-height: 31px;
             margin-top: 0px;
+
+        }
+
+        .loadingDiv {
+            position: fixed;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+        }
+
+
+        .loadingDiv>div {
+            position: relative;
+            left: 50%;
+            top: 50%;
+            margin-top: -5em;
+            margin-left: -5em;
+            padding: 5em;
+            background: url(/image/loading.gif) no-repeat;
         }
     </style>
 </head>
@@ -27,6 +48,13 @@
 <input hidden  id="firstWorkCity"  th:value="${firstWorkCity}"/>
 <input  hidden id="push"  th:value="${push}"/>
 <input hidden id="_workYear"  th:value="${workYear}"/>
+<input hidden id="companyId"  th:value="${companyId}"/>
+<input hidden id="uid"  th:value="${uid}"/>
+<!--loading动画-->
+<div class="loadingDiv">
+    <div></div>
+</div>
+
 <br>
 <h2>已选：<span id="className" th:text="${className}"></span>&nbsp;&nbsp;&nbsp;<span id="companyName" style="font-size: 13px" th:text="${companyName}"></span></h2>
 <br>
@@ -69,8 +97,8 @@
         </div>
         <a class="layui-btn search_btn" id="select">搜索</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <span>已选&nbsp;<b id="chooseMessage"></b>&nbsp;份简历</span>
-        <button id="rePush" class="layui-btn layui-btn-normal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推送&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        <span>已选&nbsp;<b id="chooseMessage">0</b>&nbsp;份简历</span>
+        <a id="rePush" class="layui-btn layui-btn-normal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推送&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
     </div>
     <table id="data_table" lay-filter="test"></table>
     <b style="margin-bottom: 1px;float:right" id="page"></b>
@@ -82,15 +110,22 @@
 <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
 <script src="/js/salesManagement/personnelChoose.js"></script>
 <script>
+    /*loading动画*/
+    $(document).bind("ajaxSend", function () {
+        $(".loadingDiv").show();
+    }).bind("ajaxComplete", function () {
+        $(".loadingDiv").hide();
+    });
+
 
     layui.use(['table','laypage','element','jquery','layer','form'], function() {
         var table = layui.table;
         var laypage = layui.laypage;
-        var laayer=layui.layer;
+        var layer=layui.layer;
         var curr = 1;
         var form=layui.form;
 
-
+        var index = layer.load(1); //添加laoding,0-2两种方式
         //渲染列表
         table.render({
             elem: '#data_table'
@@ -102,7 +137,7 @@
                 [
                 // {type: 'checkbox', fixed: 'left'}
                 {field: 'check', title: '', width: '2%'}
-                ,{field: 'username', title: '<b>姓名</b>', width: '10%'}
+                ,{field: 'userName', title: '<b>姓名</b>', width: '10%'}
                 , {field: 'jobName', title: '<b>意向职位</b>', width: "12%"}
                 , {field: 'jobType', title: '<b>行业类型</b>', width: "14%" }
                 , {field: 'cityName', title: '<b>工作城市</b>', width: "12%"}
@@ -112,7 +147,10 @@
                 , {field: 'pushCount', title: '<b>推送次数</b>', width: "11%", sort: true}
                 ]
             ]
-        });
+            ,done: function (res) {   //返回数据执行回调函数
+            layer.close(index);    //返回数据关闭loading
+        }
+            });
 
 
         //分页处理
@@ -122,6 +160,7 @@
             , count: $("#dataCount").val()//数据总数，从服务端得到
             , limit: 15
             , skip: true
+            ,loading: true
             , jump: function (obj, first) {
                 //obj包含了当前分页的所有参数，比如：
                 console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据
@@ -139,7 +178,7 @@
                         [
                             // {type: 'checkbox', fixed: 'left'}
                             {field: 'check', title: '', width: '3%'}
-                            ,{field: 'username', title: '<b>姓名</b>', width: '10%'}
+                            ,{field: 'userName', title: '<b>姓名</b>', width: '10%'}
                             , {field: 'jobName', title: '<b>意向职位</b>', width: "12%"}
                             , {field: 'jobType', title: '<b>行业类型</b>', width: "14%" }
                             , {field: 'cityName', title: '<b>工作城市</b>', width: "12%"}
@@ -203,13 +242,43 @@
 
         //托送委托事件
         $("body").on("click","#rePush",function(){
-            var userIds=[];
+            var userIds="-1";
+            var filterIds="-1";
            $.each($("input:checked"),function () {
-               var $userId=$(this).attr("userId")
-                userIds.push($userId);
+                var $userId=$(this).attr("userId");
+                userIds+=","+$userId;
            })
-            $.post("/SalesManagement/push",{userIds:userIds},function (data) {
 
+            $.each($("input:checked"),function () {
+                var $filterId=$(this).attr("filterId");
+                filterIds+=","+$filterId;
+            })
+            console.log("userIds:"+filterIds,"filterIds"+filterIds);
+
+            $.ajax({
+                url: '/SalesManagement/push',
+                type: 'POST', //GET
+                data: {
+                    userIds:userIds,
+                    companyUserId:$("#uid").val(),
+                    classId:$("#classId").val(),
+                    filterIds:filterIds
+                },
+                // dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                success: function (data) {
+                    if(data.code==0){
+                        var successCount=data.data.successCount;
+                        var failCount=data.data.failCount;
+                        var sumCount=data.data.sumCount;
+                        var companyName=$("#companyName").html();
+                        console.log(successCount,failCount,successCount);
+                        window.location.href="/SalesManagement/pushResult?successCount="+successCount+"&failCount="+failCount+"&sumCount="+sumCount+"&companyName="+companyName;
+                        return false;
+                    }
+                }
+                , error: function () {
+                    alert("失败");
+                }
             })
 
         })

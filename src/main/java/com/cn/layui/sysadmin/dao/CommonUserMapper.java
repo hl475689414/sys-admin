@@ -1,6 +1,7 @@
 package com.cn.layui.sysadmin.dao;
 
 import com.cn.layui.sysadmin.entity.CommonUser;
+import com.cn.layui.sysadmin.entity.PushUser;
 import com.cn.layui.sysadmin.vo.CommonUserListVo;
 import com.cn.layui.sysadmin.vo.UserInfoVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,4 +20,6 @@ public interface CommonUserMapper {
     UserInfoVo getUserInfo(Integer userId);
 
     CommonUser selectByPrimaryKey(Integer userId);
+
+    PushUser selectPushUserByPrimaryKey(Integer id);
 }

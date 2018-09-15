@@ -4,6 +4,7 @@ package com.cn.layui.sysadmin.vo;
  * 求职信息
  */
 public class JobWantedInfoVo {
+    private Integer filterId;//求职意向表id
     private Integer id;//用户id
     private String userName;
     private String jobName;
@@ -14,6 +15,14 @@ public class JobWantedInfoVo {
     private String lastLoginTime;
     private Integer pushCount;
     private String check;//复选框
+
+    public Integer getFilterId() {
+        return filterId;
+    }
+
+    public void setFilterId(Integer filterId) {
+        this.filterId = filterId;
+    }
 
     public String getCheck() {
         return check;

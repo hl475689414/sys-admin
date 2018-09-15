@@ -48,7 +48,7 @@
   <select id="selectListByCondition" resultType="com.cn.layui.sysadmin.vo.PostPositionVo">
     SELECT rjc.title as workName,cc.`name` as city,rjb.payStart as startMoney,rjb.payEnd as endMoney,rjb.workYear as workYear
     ,ccy.authVip as rank,ccy.fullName as companyName,cu.tel as phone,cu.loginTime as lastLoginTime,rjb.createTime as releaseTime
-    ,rjb.recommendNum as pushCount,rjb.classId as classId,rjb.companyId  as companyId
+    ,rjb.recommendNum as pushCount,rjb.classId as classId,rjb.companyId  as companyId,cu.id as uid
     FROM recruit_job_base rjb
     LEFT JOIN recruit_job_extend rje on rje.jobId = rjb.id
     LEFT JOIN recruit_job_class rjc on rjc.id = rjb.classId
@@ -107,5 +107,13 @@
       AND (ccy.fullName LIKE CONCAT('%', #{keys}, '%') OR cu.tel LIKE CONCAT('%', #{keys}, '%'))
     </if>
   </select>
+
+  <update id="updateRecommendNumByPrimaryKey" parameterType="java.lang.Integer">
+    UPDATE recruit_job_base
+    <set>
+      recommendNum=recommendNum+1
+    </set>
+    WHERE id=#{id}
+  </update>
 
 </mapper>

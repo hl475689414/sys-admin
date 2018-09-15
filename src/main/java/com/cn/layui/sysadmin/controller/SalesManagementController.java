@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
-
 @Controller
 @RequestMapping(value = "SalesManagement")
 public class SalesManagementController {
@@ -54,7 +53,7 @@ public class SalesManagementController {
      * @return
      */
     @RequestMapping(value = "/personnelChoose")
-    public String personnelChoose(Map<String,Object> map,Integer companyId,String companyName,Integer classId,String className,String keys,Integer workCity,Integer workYear,Integer firstClassId,Integer firstWorkCity,Integer push){
+    public String personnelChoose(Map<String,Object> map,Integer companyId,String companyName,Integer classId,String className,String keys,Integer workCity,Integer workYear,Integer firstClassId,Integer firstWorkCity,Integer push,Integer uid){
         JsonResult jobClassList = commonService.getJobClassList();
         String jobListString= JSONArray.fromObject(jobClassList.getData()).toString();
         map.put("jobClassList",jobListString);//所有职位（二级）
@@ -71,6 +70,7 @@ public class SalesManagementController {
         map.put("keys",keys);
         map.put("push",push);
         map.put("workYear",workYear);
+        map.put("uid",uid);
         map.put("dataCount",getChooseCount(keys,classId,workCity, workYear, push));
         return "/salesManagementent/personnelChoose";
     }
@@ -204,9 +204,23 @@ public class SalesManagementController {
      */
     @RequestMapping("push")
     @ResponseBody
-    public JsonResult push(Integer[] userIds){
-        System.out.println("userIds==============>"+userIds);
-        return null;
+    public JsonResult push(String userIds,String companyUserId,String classId,String filterIds){
+        String[] ids = userIds.split(",");
+        String[] fIds = filterIds.split(",");
+        return salesManagementService.toDoPush(companyUserId,ids,fIds,classId);
+    }
+
+    /**
+     *
+     * @return
+     */
+    @RequestMapping("pushResult")
+    public String pushResult(Integer successCount,Integer failCount,Integer sumCount,Map<String,Object> map,String companyName){
+        map.put("successCount",successCount);
+        map.put("failCount",failCount);
+        map.put("sumCount",sumCount);
+        map.put("companyName",companyName);
+        return "/salesManagementent/pushResult";
     }
 
 

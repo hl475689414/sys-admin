@@ -92,10 +92,18 @@
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
+    SELECT
     <include refid="Base_Column_List" />
     from common_user
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectPushUserByPrimaryKey" parameterType="java.lang.Integer" resultType="com.cn.layui.sysadmin.entity.PushUser">
+    SELECT  cu.id ,cu.truename as name,cu.tel as phone,rr.pdfUrl as pdfUrl,rr.oldPosition as jobName,rr.startWorkYear
+    FROM common_user cu
+    LEFT  JOIN recruit_job_filter rjf ON cu.id=rjf.userId
+    LEFT  JOIN recruit_resume rr ON  rr.userId=rjf.userId
+    WHERE cu.id=#{id}
+    GROUP BY cu.id
+  </select>
 </mapper>

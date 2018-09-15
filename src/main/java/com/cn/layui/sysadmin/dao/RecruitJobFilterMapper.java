@@ -15,4 +15,6 @@ public interface RecruitJobFilterMapper {
     List<JobWantedInfoVo> getListByCondition(@Param("keys") String keys,@Param("classId") Integer classId,@Param("workCity") Integer workCity,@Param("startWorkYear") Integer startWorkYear,@Param("endWorkYear") Integer endWorkYear,@Param("ispush") Integer ispush,@Param("curr") Integer curr);
 
     Integer getChooseCount(@Param("classId") Integer classId,@Param("startWorkYear") Integer startWorkYear,@Param("endWorkYear") Integer endWorkYear,@Param("workCity") Integer workCity,@Param("ispush") Integer ispush,@Param("keys") String keys);
+
+    int updateRecommendNum(Integer id);
 }

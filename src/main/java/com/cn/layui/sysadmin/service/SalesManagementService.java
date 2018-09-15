@@ -52,4 +52,14 @@ public interface SalesManagementService {
      * @return
      */
     Integer getChooseCount(Integer classId, Integer workYear, Integer workCity, Integer ispush, String keys);
+
+    /**
+     * 后台手动为企业推送人才
+     * @param companyUserId
+     * @param ids
+     * @param fIds
+     * @param classId
+     * @return
+     */
+    JsonResult toDoPush(String companyUserId,String[] ids,String[] fIds,String classId);
 }
